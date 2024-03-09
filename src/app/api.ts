@@ -25,7 +25,7 @@ export interface Response<Data> {
 }
 
 const api = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: `${import.meta.env.VITE_API_URL}/api`,
 });
 
 api.interceptors.request.use((config) => {
@@ -33,6 +33,8 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers["Authorization"] = `Bearer ${token}`;
   }
+
+  config.headers["ngrok-skip-browser-warning"] = "1337";
 
   return config;
 });
