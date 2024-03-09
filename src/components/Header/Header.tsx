@@ -37,7 +37,7 @@ export function Header() {
           <AuthButtons />
         )}
       </Flex>
-      <Box display="block" px={{ base: "0px", lg: "50px" }}>
+      <Box display="block" px={{ base: "20px", lg: "50px" }}>
         <Outlet />
       </Box>
     </>

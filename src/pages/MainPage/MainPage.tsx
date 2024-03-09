@@ -11,9 +11,6 @@ import { ArticleCard } from "../../components/Article";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux.ts";
 import { useEffect, useState } from "react";
 import { fetchArticles } from "../../features/article/articleActions.ts";
-import { Response } from "../../app/api.ts";
-import { TArticle } from "../../features/article/articleSlice.ts";
-import { PayloadAction } from "@reduxjs/toolkit";
 
 export function MainPage() {
   const dispatch = useAppDispatch();
