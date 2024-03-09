@@ -31,7 +31,7 @@ export const createArticleComment = createAsyncThunk(
       return data;
     } catch (err) {
       if (err instanceof AxiosError) {
-        return thunkAPI.rejectWithValue(err.response.data);
+        return thunkAPI.rejectWithValue(err.response?.data);
       }
     }
   },

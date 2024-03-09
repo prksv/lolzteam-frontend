@@ -23,9 +23,11 @@ export function Header() {
           <Link to="/">
             <Button variant="ghost">Главная</Button>{" "}
           </Link>
-          <Link to={import.meta.env.VITE_ADMIN_PANEL}>
-            <Button variant="ghost">Админ-панель</Button>
-          </Link>
+          {isAuthorized && user?.is_admin && (
+            <Link to={import.meta.env.VITE_ADMIN_PANEL}>
+              <Button variant="ghost">Админ-панель</Button>
+            </Link>
+          )}
         </Flex>
         {isLoading ? (
           <Skeleton height="40px" width="100px" />

@@ -11,6 +11,7 @@ export type TUser = {
   id: number;
   email: string;
   username: string;
+  is_admin: boolean;
 };
 
 export type TUserPublic = {
