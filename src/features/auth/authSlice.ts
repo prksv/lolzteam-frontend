@@ -1,31 +1,51 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchUser, loginUser } from "./authActions.ts";
 
 export interface ModalsState {
-  isAuth: boolean;
-  user: string|null;
+  user: TUser | null;
+  isLoading: boolean;
 }
 
-const initialState: ModalsState = {
-  isAuth: false,
-  user: null,
+export type TUser = {
+  id: number;
+  email: string;
+  username: string;
 };
 
+export type TUserPublic = {
+  id: number;
+  username: string;
+};
 
-export const registerUser = createAsyncThunk("auth/register", async (registerData: any) => {
-  const response = await axios.post("http://localhost:8000/api/auth/register", registerData);
-
-  return response.data;
-});
+const initialState: ModalsState = {
+  user: null,
+  isLoading: false,
+};
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(loginUser.fulfilled, (_state, { payload }) => {
+      localStorage.setItem("token", payload.data.token);
+    });
 
+    builder.addCase(fetchUser.pending, (state) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(fetchUser.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+    builder.addCase(fetchUser.fulfilled, (state, { payload }) => {
+      state.user = payload.data;
+      state.isLoading = false;
+    });
   },
 });
 
-export const { } = authSlice.actions;
+export const {} = authSlice.actions;
 
 export default authSlice.reducer;

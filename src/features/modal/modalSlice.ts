@@ -13,10 +13,13 @@ const initialState: ModalsState = {
   register: {
     isOpen: false,
   },
+  login: {
+    isOpen: false,
+  },
 };
 
-export const modalsSlice = createSlice({
-  name: "counter",
+export const modalSlice = createSlice({
+  name: "modals",
   initialState,
   reducers: {
     openModal: (state, action: PayloadAction<string>) => {
@@ -28,6 +31,6 @@ export const modalsSlice = createSlice({
   },
 });
 
-export const { openModal, closeModal } = modalsSlice.actions;
+export const { openModal, closeModal } = modalSlice.actions;
 
-export default modalsSlice.reducer;
+export default modalSlice.reducer;

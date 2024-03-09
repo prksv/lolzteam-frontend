@@ -1,26 +1,33 @@
-import { Header } from "../components/Header";
-import { Box, Flex, Heading } from "@chakra-ui/react";
-import { Article } from "../components/Article";
-import { RegisterModal } from "../components/RegisterModal";
+import { Header } from "./components/Header";
+import { RegisterModal } from "./components/RegisterModal";
+import { LoginModal } from "./components/LoginModal";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { MainPage } from "./pages/MainPage";
+import { ArticlePage } from "./pages/ArticlePage";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Header />,
+    children: [
+      {
+        path: "/",
+        element: <MainPage />,
+      },
+      {
+        path: "article/:articleId",
+        element: <ArticlePage />,
+      },
+    ],
+  },
+]);
 
 function App() {
   return (
     <>
-      <Box display="block" px="50px">
-        <Header />
-        <Box>
-          <Heading>Статьи</Heading>
-          <Flex gap="5%" justifyContent="flex-start" flexWrap="wrap">
-            <Article />
-            <Article />
-            <Article />
-            <Article />
-            <Article />
-            <Article />
-          </Flex>
-        </Box>
-      </Box>
+      <RouterProvider router={router} />
       <RegisterModal />
+      <LoginModal />
     </>
   );
 }
