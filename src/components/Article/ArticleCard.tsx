@@ -20,9 +20,9 @@ export function ArticleCard({ id, title, description }: TArticle) {
         </Stack>
       </CardBody>
       <CardFooter>
-        <Button variant="solid">
-          <Link to={`article/${id}`}>Читать</Link>
-        </Button>
+        <Link to={`article/${id}`}>
+          <Button variant="solid">Читать</Button>
+        </Link>
       </CardFooter>
     </Card>
   );
