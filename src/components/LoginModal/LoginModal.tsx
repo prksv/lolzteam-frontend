@@ -10,6 +10,7 @@ import {
   FormControl,
   FormLabel,
   Input,
+  useToast,
 } from "@chakra-ui/react";
 import { closeModal } from "../../features/modal/modalSlice.ts";
 import {
@@ -24,14 +25,26 @@ export function LoginModal() {
   const id = "login";
 
   const dispatch = useAppDispatch();
+  const toast = useToast();
 
   const { handleSubmit, register } = useForm<LoginData>();
 
   const onSubmit = (values: LoginData) => {
-    dispatch(loginUser(values)).then(() => {
-      dispatch(fetchUser());
-      dispatch(closeModal(id));
-    });
+    dispatch(loginUser(values))
+      .unwrap()
+      .then(() => {
+        dispatch(fetchUser());
+        dispatch(closeModal(id));
+      })
+      .catch((err) => {
+        toast({
+          title: "Oops...",
+          description: err.message,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      });
   };
 
   return (

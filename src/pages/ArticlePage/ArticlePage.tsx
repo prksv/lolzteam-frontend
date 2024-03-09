@@ -1,21 +1,15 @@
 import {
   Box,
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
   Container,
   Divider,
-  Flex,
   Heading,
   Skeleton,
   SkeletonText,
   Text,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
-import { useLoaderData, useParams, useSearchParams } from "react-router-dom";
-import { TArticle } from "../../features/article/articleSlice.ts";
-import { Response } from "../../app/api.ts";
+import { useParams } from "react-router-dom";
 import Markdown from "react-markdown";
 import {
   ArticleCommentInput,
@@ -31,7 +25,7 @@ import { useEffect } from "react";
 
 export function ArticlePage() {
   const dispatch = useAppDispatch();
-  // const { content, title, id, comments } = response.data;
+  const toast = useToast();
   const { articleId } = useParams<{ articleId: string }>();
 
   const article = useAppSelector((state) =>
@@ -47,7 +41,17 @@ export function ArticlePage() {
   }, [articleId]);
 
   const onCommentSubmit = (values: CommentFields) => {
-    dispatch(createArticleComment({ ...values, articleId: Number(articleId) }));
+    dispatch(createArticleComment({ ...values, articleId: Number(articleId) }))
+      .unwrap()
+      .catch((err) => {
+        toast({
+          title: "Oops...",
+          description: err.message,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      });
   };
 
   return (
@@ -68,7 +72,7 @@ export function ArticlePage() {
       <VStack maxW="800px">
         <ArticleCommentInput onSubmit={onCommentSubmit} />
         <Divider />
-        <VStack alignSelf="start" p="15px" gap="15px">
+        <VStack w="100%" alignItems="flex-start" p="15px" gap="15px">
           {article?.comments?.map((comment) => {
             return (
               <ArticleComment

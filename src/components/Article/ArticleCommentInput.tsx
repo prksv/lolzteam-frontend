@@ -10,10 +10,16 @@ interface ArticleCommentInputProps {
 }
 
 export function ArticleCommentInput({ onSubmit }: ArticleCommentInputProps) {
-  const { register, handleSubmit } = useForm<CommentFields>();
+  const { register, handleSubmit, reset } = useForm<CommentFields>();
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+    <form
+      onSubmit={handleSubmit((values) => {
+        onSubmit(values);
+        reset();
+      })}
+      style={{ width: "100%" }}
+    >
       <InputGroup>
         <Input {...register("text")} placeholder="Оставить коментарий..." />
         <InputRightElement width="120px">

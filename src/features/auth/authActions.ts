@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../app/api.ts";
+import { AxiosError } from "axios";
 
 export interface RegisterData {
   email: string;
@@ -14,19 +15,30 @@ export interface LoginData {
 
 export const registerUser = createAsyncThunk(
   "auth/register",
-  async (registerData: RegisterData) => {
-    const { data } = await api.post("auth/register", registerData);
+  async (registerData: RegisterData, thunkAPI) => {
+    try {
+      const { data } = await api.post("auth/register", registerData);
 
-    return { data };
+      return { data };
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        return thunkAPI.rejectWithValue(err.response?.data);
+      }
+    }
   },
 );
 
 export const loginUser = createAsyncThunk(
   "auth/login",
-  async (loginData: LoginData) => {
-    const { data } = await api.post("auth/login", loginData);
-
-    return data;
+  async (loginData: LoginData, thunkAPI) => {
+    try {
+      const { data } = await api.post("auth/login", loginData);
+      return data;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        return thunkAPI.rejectWithValue(err.response?.data);
+      }
+    }
   },
 );
 

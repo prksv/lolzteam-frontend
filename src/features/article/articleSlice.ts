@@ -1,7 +1,11 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchArticle, fetchArticles } from "./articleActions.ts";
+import {
+  createArticleComment,
+  fetchArticle,
+  fetchArticles,
+} from "./articleActions.ts";
 import { TUserPublic } from "../auth/authSlice.ts";
-import { RootState } from "../../app/store.ts";
+import { Response } from "../../app/api.ts";
 
 export type TComment = {
   text: string;
@@ -30,11 +34,15 @@ export const articleSlice = createSlice({
   name: "article",
   initialState,
   reducers: {
-    addComment: (
+    addComment(
       state,
-      payload: PayloadAction<{ articleId: number; comment: TComment }>,
-    ) => {
-      state.f;
+      { payload }: PayloadAction<{ articleId: number; comment: TComment }>,
+    ) {
+      const index = state.articles.findIndex(
+        (article) => article.id === payload.articleId,
+      );
+
+      state.articles[index].comments?.unshift(payload.comment);
     },
   },
   extraReducers: (builder) => {
@@ -45,22 +53,25 @@ export const articleSlice = createSlice({
       state.articles = payload.data;
       state.isLoading = false;
     });
-    builder.addCase(fetchArticle.fulfilled, (state, { payload }) => {
-      const index = state.articles.findIndex(
-        (article) => article.id === payload.data.id,
-      );
+    builder.addCase(
+      fetchArticle.fulfilled,
+      (state, { payload }: PayloadAction<Response<TArticle>>) => {
+        const index = state.articles.findIndex(
+          (article) => article.id === payload.data.id,
+        );
 
-      if (index === -1) {
-        state.articles.push(payload.data);
-      } else {
-        state.articles[index] = payload.data;
-      }
+        if (index === -1) {
+          state.articles.push(payload.data);
+        } else {
+          state.articles[index] = payload.data;
+        }
 
-      state.isLoading = false;
-    });
+        state.isLoading = false;
+      },
+    );
   },
 });
 
-export const {} = articleSlice.actions;
+export const { addComment } = articleSlice.actions;
 
 export default articleSlice.reducer;

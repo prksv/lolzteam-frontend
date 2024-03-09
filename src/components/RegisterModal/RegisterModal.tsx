@@ -14,19 +14,32 @@ import {
   ModalFooter,
   ModalHeader,
   Stack,
+  useToast,
 } from "@chakra-ui/react";
 
 export function RegisterModal() {
   const id = "register";
 
   const dispatch = useAppDispatch();
+  const toast = useToast();
 
   const { handleSubmit, register } = useForm<RegisterData>();
 
   const onSubmit = (values: RegisterData) => {
-    dispatch(registerUser(values)).then(() => {
-      dispatch(closeModal(id));
-    });
+    dispatch(registerUser(values))
+      .unwrap()
+      .then(() => {
+        dispatch(closeModal(id));
+      })
+      .catch((err) => {
+        toast({
+          title: "Oops...",
+          description: err.message,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      });
   };
 
   return (

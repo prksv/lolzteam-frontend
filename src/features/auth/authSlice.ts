@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchUser, loginUser } from "./authActions.ts";
+import { useToast } from "@chakra-ui/react";
 
 export interface ModalsState {
   user: TUser | null;
