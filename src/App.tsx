@@ -4,11 +4,12 @@ import { LoginModal } from "./components/LoginModal";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
 import { ArticlePage } from "./pages/ArticlePage";
+import { MainLayout } from "./components/Layout";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Header />,
+    element: <MainLayout />,
     children: [
       {
         path: "/",
