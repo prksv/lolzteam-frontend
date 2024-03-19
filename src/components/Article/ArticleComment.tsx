@@ -8,7 +8,9 @@ interface ArticleCommentProps {
 export function ArticleComment({ username, text }: ArticleCommentProps) {
   return (
     <Box>
-      <Text fontWeight="bold">{username}</Text>
+      <Text itemType="span" fontWeight="bold">
+        {username}
+      </Text>
       <Text>{text}</Text>
     </Box>
   );

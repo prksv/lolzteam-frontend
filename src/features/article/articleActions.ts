@@ -4,6 +4,7 @@ import { CommentFields } from "../../components/Article/ArticleCommentInput.tsx"
 import { addComment, TArticle } from "./articleSlice.ts";
 import { Response } from "../../app/api.ts";
 import { AxiosError } from "axios";
+import { openModal } from "../modal/modalSlice.ts";
 
 export const fetchArticles = createAsyncThunk(
   "articles",
@@ -31,6 +32,9 @@ export const createArticleComment = createAsyncThunk(
       return data;
     } catch (err) {
       if (err instanceof AxiosError) {
+        if (err.response?.status === 401) {
+          thunkAPI.dispatch(openModal("login"));
+        }
         return thunkAPI.rejectWithValue(err.response?.data);
       }
     }

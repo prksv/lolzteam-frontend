@@ -63,7 +63,7 @@ export function ArticlePage() {
       </Heading>
       <Box px="15px" boxShadow="2px" minH="300px" pb="50px">
         <SkeletonText noOfLines={10} isLoaded={article?.content !== undefined}>
-          <Text whiteSpace="pre-line">
+          <Text as="span" whiteSpace="pre-line">
             <Markdown children={article?.content} skipHtml />
           </Text>
         </SkeletonText>
@@ -73,9 +73,10 @@ export function ArticlePage() {
         <ArticleCommentInput onSubmit={onCommentSubmit} />
         <Divider />
         <VStack w="100%" alignItems="flex-start" p="15px" gap="15px">
-          {article?.comments?.map((comment) => {
+          {article?.comments?.map((comment, key) => {
             return (
               <ArticleComment
+                key={key}
                 username={comment.user!.username}
                 text={comment.text}
               />
